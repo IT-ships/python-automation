@@ -5,12 +5,12 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 
 # ---------------- Folder Setup ----------------
-output_folder = r"C:\Users\Matthew\OneDrive - QualShips\Documents\Port Scraper"
-if not os.path.exists(output_folder):
-    os.makedirs(output_folder)
+output_folder = "output"
+os.makedirs(output_folder, exist_ok=True)
 
 filename = "combined_arrivals.xlsx"
 full_path = os.path.join(output_folder, filename)
+
 
 # ---------------- Sydney Scraper ----------------
 def get_sydney_arrivals():
@@ -98,3 +98,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
