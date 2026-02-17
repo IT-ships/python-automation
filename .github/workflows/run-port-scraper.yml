@@ -1,12 +1,12 @@
 name: Run Port Arrivals Scraper
 
 on:
-  permissions:
-  contents: write
-
   schedule:
     - cron: "0 21 * * *"
   workflow_dispatch:
+  
+permissions:
+  contents: write
 
 jobs:
   scrape:
