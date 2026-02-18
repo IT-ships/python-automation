@@ -10,6 +10,8 @@ import pytz
 sydney_tz = pytz.timezone("Australia/Sydney")
 local_time = datetime.now(sydney_tz)
 
+
+
 # ---------------- Folder Setup ----------------
 output_folder = "output"
 os.makedirs(output_folder, exist_ok=True)
@@ -109,15 +111,15 @@ def main():
         
         # Add Last Updated sheet
         import openpyxl
-        df_last = pd.DataFrame({
-        "Last Updated": [datetime.now().strftime("%Y-%m-%d %H:%M")]
-    })
-    df_last.to_excel(writer, sheet_name="Last Updated", index=False)
+        ddf_last = pd.DataFrame({
+    "Last Updated": [local_time.strftime("%Y-%m-%d %H:%M")]
+})
 
     print(f"Excel file saved to: {full_path}")
 
 if __name__ == "__main__":
     main()
+
 
 
 
