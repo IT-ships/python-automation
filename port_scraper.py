@@ -13,7 +13,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 sydney_tz = pytz.timezone("Australia/Sydney")
 
 # ---------------- Folder Setup ----------------
-output_folder = "output"  # Keep this for GitHub Actions workflow
+output_folder = r"C:\Users\Matthew\OneDrive - QualShips\Documents\Port Arrivals"
 os.makedirs(output_folder, exist_ok=True)
 
 # Always use the same filename
@@ -117,3 +117,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
