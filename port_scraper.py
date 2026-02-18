@@ -5,26 +5,21 @@ from bs4 import BeautifulSoup
 from datetime import datetime
 import pytz
 
-
-# Sydney timezone (automatically handles DST)
+# ---------------- Sydney timezone ----------------
 sydney_tz = pytz.timezone("Australia/Sydney")
-local_time = datetime.now(sydney_tz)
-
-
 
 # ---------------- Folder Setup ----------------
 output_folder = "output"
 os.makedirs(output_folder, exist_ok=True)
 
-# Use date in filename
-today_str = datetime.now().strftime("%Y-%m-%d")
+# Use date + time in filename to avoid overwriting
+today_str = datetime.now(sydney_tz).strftime("%Y-%m-%d_%H-%M")
 filename = f"combined_arrivals_{today_str}.xlsx"
 full_path = os.path.join(output_folder, filename)
 
-# REMOVE old file if exists
+# Remove old file if exists (just in case)
 if os.path.exists(full_path):
     os.remove(full_path)
-
 
 # ---------------- Sydney Scraper ----------------
 def get_sydney_arrivals():
@@ -56,7 +51,7 @@ def get_sydney_arrivals():
                     "From": cols[6],
                     "To": cols[7],
                     "Berth": cols[4],
-                    "Last Updated": datetime.now().strftime("%Y-%m-%d %H:%M")
+                    "Last Updated": datetime.now(sydney_tz).strftime("%Y-%m-%d %H:%M")
                 })
         page += 1
 
@@ -87,7 +82,7 @@ def get_melbourne_arrivals():
                         "DateTime": cols[1],
                         "From": cols[2],
                         "To": cols[3],
-                        "Last Updated": datetime.now().strftime("%Y-%m-%d %H:%M")
+                        "Last Updated": datetime.now(sydney_tz).strftime("%Y-%m-%d %H:%M")
                     })
     return pd.DataFrame(all_data)
 
@@ -101,29 +96,20 @@ def main():
     df_melbourne = get_melbourne_arrivals()
     print(f"Melbourne: {len(df_melbourne)} arrivals found.")
 
-    # Write to Excel
+    # ---------------- Write to Excel ----------------
     with pd.ExcelWriter(full_path, engine="openpyxl", mode='w') as writer:
         if not df_sydney.empty:
             df_sydney.to_excel(writer, sheet_name="Sydney", index=False)
         if not df_melbourne.empty:
             df_melbourne.to_excel(writer, sheet_name="Melbourne", index=False)
 
-        
         # Add Last Updated sheet
-        import openpyxl
-        ddf_last = pd.DataFrame({
-    "Last Updated": [local_time.strftime("%Y-%m-%d %H:%M")]
-})
+        df_last = pd.DataFrame({
+            "Last Updated": [datetime.now(sydney_tz).strftime("%Y-%m-%d %H:%M")]
+        })
+        df_last.to_excel(writer, sheet_name="Last Updated", index=False)
 
     print(f"Excel file saved to: {full_path}")
 
 if __name__ == "__main__":
     main()
-
-
-
-
-
-
-
-
