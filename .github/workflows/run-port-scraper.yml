@@ -39,7 +39,7 @@ jobs:
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add output/combined_arrivals.xlsx
-          git commit -m "Update port arrivals Excel" || echo "No changes to commit"
+          git add output/*.xlsx
+          git diff --cached --quiet || git commit -m "Update port arrivals Excel"
           git push
 
