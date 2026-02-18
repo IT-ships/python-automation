@@ -12,9 +12,8 @@ sydney_tz = pytz.timezone("Australia/Sydney")
 output_folder = "output"
 os.makedirs(output_folder, exist_ok=True)
 
-# Use date + time in filename to avoid overwriting
-today_str = datetime.now(sydney_tz).strftime("%Y-%m-%d_%H-%M")
-filename = f"combined_arrivals_{today_str}.xlsx"
+# Always use the same filename
+filename = "ports_arrivals.xlsx"
 full_path = os.path.join(output_folder, filename)
 
 # Remove old file if exists (just in case)
