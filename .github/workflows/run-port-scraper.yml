@@ -6,7 +6,6 @@ on:
     - cron: "0 5 * * *"    # 3:00 PM AEST
   workflow_dispatch:        # manual trigger if needed
 
-  
 permissions:
   contents: write
 
@@ -33,7 +32,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: combined-port-arrivals
-          path: output/combined_arrivals.xlsx
+          path: output/*.xlsx   # <-- wildcard to match date-based filenames
 
       - name: Commit Excel file to repo
         run: |
@@ -41,5 +40,4 @@ jobs:
           git config user.email "actions@github.com"
           git add output/*.xlsx
           git diff --cached --quiet || git commit -m "Update port arrivals Excel"
-          git push
-
+          git push || echo "No changes to push"
