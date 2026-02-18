@@ -4,20 +4,23 @@ import pandas as pd
 from bs4 import BeautifulSoup
 from datetime import datetime
 import pytz
+import urllib3
+
+# ---------------- Disable SSL warnings ----------------
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 # ---------------- Sydney timezone ----------------
 sydney_tz = pytz.timezone("Australia/Sydney")
 
 # ---------------- Folder Setup ----------------
-# Replace this path with your local OneDrive-synced SharePoint folder
-output_folder = r"C:\Users\Matthew\OneDrive - QualShips\Documents\Port Arrivals"
+output_folder = "output"  # Keep this for GitHub Actions workflow
 os.makedirs(output_folder, exist_ok=True)
 
-# Always use the same filename so it overwrites each run
+# Always use the same filename
 filename = "ports_arrivals.xlsx"
 full_path = os.path.join(output_folder, filename)
 
-# Remove old file if exists (just in case)
+# Remove old file if exists
 if os.path.exists(full_path):
     os.remove(full_path)
 
@@ -29,7 +32,7 @@ def get_sydney_arrivals():
 
     while True:
         url = f"{BASE_URL}?page={page}"
-        response = requests.get(url, timeout=15)
+        response = requests.get(url, timeout=15)  # Sydney site is fine
         soup = BeautifulSoup(response.text, "html.parser")
 
         table = soup.find("table")
@@ -60,7 +63,8 @@ def get_sydney_arrivals():
 # ---------------- Melbourne Scraper ----------------
 def get_melbourne_arrivals():
     URL = "https://ports.vic.gov.au/marine-operations/ship-movements/"
-    response = requests.get(URL, timeout=15)
+    # Disable SSL verification to avoid CERTIFICATE_VERIFY_FAILED
+    response = requests.get(URL, timeout=15, verify=False)
     soup = BeautifulSoup(response.text, "html.parser")
 
     all_data = []
@@ -109,8 +113,7 @@ def main():
         })
         df_last.to_excel(writer, sheet_name="Last Updated", index=False)
 
-    print(f"Excel file saved to SharePoint-synced folder: {full_path}")
+    print(f"Excel file saved to: {full_path}")
 
 if __name__ == "__main__":
     main()
-
