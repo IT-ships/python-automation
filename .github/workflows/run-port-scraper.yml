@@ -2,8 +2,10 @@ name: Run Port Arrivals Scraper
 
 on:
   schedule:
-    - cron: "0 21 * * *"
-  workflow_dispatch:
+    - cron: "0 21 * * *"   # 7:00 AM AEST
+    - cron: "0 5 * * *"    # 3:00 PM AEST
+  workflow_dispatch:        # manual trigger if needed
+
   
 permissions:
   contents: write
