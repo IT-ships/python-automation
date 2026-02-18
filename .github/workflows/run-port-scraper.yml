@@ -14,30 +14,40 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout the repo
       - name: Checkout python-automation repo
         uses: actions/checkout@v4
 
+      # Step 2: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
 
+      # Step 3: Install dependencies
       - name: Install dependencies
         run: pip install -r requirements.txt
 
+      # Step 4: Clean old output (optional but prevents duplicates)
+      - name: Clean old Excel file
+        run: rm -f output/ports_arrivals.xlsx
+
+      # Step 5: Run port scraper
       - name: Run port scraper
         run: python port_scraper.py
 
+      # Step 6: Upload the single Excel output
       - name: Upload Excel output
         uses: actions/upload-artifact@v4
         with:
-          name: combined-port-arrivals
-          path: output/*.xlsx   # <-- wildcard to match date-based filenames
+          name: port-arrivals
+          path: output/ports_arrivals.xlsx
 
+      # Step 7: Commit Excel file back to repo (only if changed)
       - name: Commit Excel file to repo
         run: |
           git config user.name "github-actions"
           git config user.email "actions@github.com"
-          git add output/*.xlsx
+          git add output/ports_arrivals.xlsx
           git diff --cached --quiet || git commit -m "Update port arrivals Excel"
           git push || echo "No changes to push"
