@@ -94,25 +94,28 @@ def main():
     print(f"Melbourne: {len(df_melbourne)} arrivals found.")
 
     # Write to Excel
-    with pd.ExcelWriter(full_path, engine="openpyxl") as writer:
+    with pd.ExcelWriter(full_path, engine="openpyxl", mode='w') as writer:
         if not df_sydney.empty:
             df_sydney.to_excel(writer, sheet_name="Sydney", index=False)
         if not df_melbourne.empty:
             df_melbourne.to_excel(writer, sheet_name="Melbourne", index=False)
-            # Add Last Updated sheet
-        import openpyxl
-        wb = openpyxl.load_workbook(full_path)
-        if 'Last Updated' not in wb.sheetnames:
-            wb.create_sheet('Last Updated')
-        ws = wb['Last Updated']
-        ws['A1'] = 'Last Updated'
-        ws['B1'] = datetime.now().strftime("%Y-%m-%d %H:%M")
-        wb.save(full_path)
+
+        
+    # Add Last Updated sheet
+    import openpyxl
+    wb = openpyxl.load_workbook(full_path)
+    if 'Last Updated' not in wb.sheetnames:
+        wb.create_sheet('Last Updated')
+    ws = wb['Last Updated']
+    ws['A1'] = 'Last Updated'
+    ws['B1'] = datetime.now().strftime("%Y-%m-%d %H:%M")
+    wb.save(full_path)
 
     print(f"Excel file saved to: {full_path}")
 
 if __name__ == "__main__":
     main()
+
 
 
 
