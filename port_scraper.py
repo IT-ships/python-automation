@@ -103,18 +103,16 @@ def main():
         
         # Add Last Updated sheet
         import openpyxl
-        wb = openpyxl.load_workbook(full_path)
-        if 'Last Updated' not in wb.sheetnames:
-            wb.create_sheet('Last Updated')
-        ws = wb['Last Updated']
-        ws['A1'] = 'Last Updated'
-        ws['B1'] = datetime.now().strftime("%Y-%m-%d %H:%M")
-        wb.save(full_path)
+        df_last = pd.DataFrame({
+        "Last Updated": [datetime.now().strftime("%Y-%m-%d %H:%M")]
+    })
+    df_last.to_excel(writer, sheet_name="Last Updated", index=False)
 
     print(f"Excel file saved to: {full_path}")
 
 if __name__ == "__main__":
     main()
+
 
 
 
