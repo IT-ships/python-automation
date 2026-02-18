@@ -9,10 +9,11 @@ import pytz
 sydney_tz = pytz.timezone("Australia/Sydney")
 
 # ---------------- Folder Setup ----------------
-output_folder = "output"
+# Replace this path with your local OneDrive-synced SharePoint folder
+output_folder = r"C:\Users\Matthew\OneDrive - YourOrg\Port Arrivals"
 os.makedirs(output_folder, exist_ok=True)
 
-# Always use the same filename
+# Always use the same filename so it overwrites each run
 filename = "ports_arrivals.xlsx"
 full_path = os.path.join(output_folder, filename)
 
@@ -108,7 +109,7 @@ def main():
         })
         df_last.to_excel(writer, sheet_name="Last Updated", index=False)
 
-    print(f"Excel file saved to: {full_path}")
+    print(f"Excel file saved to SharePoint-synced folder: {full_path}")
 
 if __name__ == "__main__":
     main()
