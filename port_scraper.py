@@ -3,6 +3,12 @@ import requests
 import pandas as pd
 from bs4 import BeautifulSoup
 from datetime import datetime
+import pytz
+
+
+# Sydney timezone (automatically handles DST)
+sydney_tz = pytz.timezone("Australia/Sydney")
+local_time = datetime.now(sydney_tz)
 
 # ---------------- Folder Setup ----------------
 output_folder = "output"
@@ -112,6 +118,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
