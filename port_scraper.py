@@ -13,7 +13,8 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 sydney_tz = pytz.timezone("Australia/Sydney")
 
 # ---------------- Folder Setup ----------------
-output_folder = r"C:\Users\Matthew\OneDrive - QualShips\Documents\Port Arrivals"
+# Use environment variable if provided, otherwise default to "output" (GitHub Actions)
+output_folder = os.environ.get("PORT_ARRIVALS_PATH", "output")
 os.makedirs(output_folder, exist_ok=True)
 
 # Always use the same filename
@@ -117,4 +118,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
