@@ -13,6 +13,10 @@ today_str = datetime.now().strftime("%Y-%m-%d")
 filename = f"combined_arrivals_{today_str}.xlsx"
 full_path = os.path.join(output_folder, filename)
 
+# REMOVE old file if exists
+if os.path.exists(full_path):
+    os.remove(full_path)
+
 
 # ---------------- Sydney Scraper ----------------
 def get_sydney_arrivals():
@@ -109,5 +113,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
